@@ -3154,9 +3154,10 @@ The directive is supported when using OpenSSL 1.0.2 or higher and nginx 1.19.4 o
 
 Several `lua_ssl_conf_command` directives can be specified on the same level:
 
-```
-lua_ssl_conf_command Options PrioritizeChaCha;
-lua_ssl_conf_command Ciphersuites TLS_CHACHA20_POLY1305_SHA256;
+```nginx
+
+ lua_ssl_conf_command Options PrioritizeChaCha;
+ lua_ssl_conf_command Ciphersuites TLS_CHACHA20_POLY1305_SHA256;
 ```
 
 Configuration commands are applied after OpenResty own configuration for SSL, so they can be used to override anything set by OpenResty.
@@ -3164,6 +3165,8 @@ Configuration commands are applied after OpenResty own configuration for SSL, so
 Note though that configuring OpenSSL directly with `lua_ssl_conf_command` might result in a behaviour OpenResty does not expect, and should be done with care.
 
 This directive was first introduced in the `v0.10.21` release.
+
+
 
 [Back to TOC](#directives)
 
@@ -8405,7 +8408,7 @@ ngx.timer.at
 
 **syntax:** *hdl, err = ngx.timer.at(delay, callback, user_arg1, user_arg2, ...)*
 
-**context:** *init_worker_by_lua&#42;, set_by_lua&#42;, rewrite_by_lua&#42;, access_by_lua&#42;, content_by_lua&#42;, header_filter_by_lua&#42;, body_filter_by_lua&#42;, log_by_lua&#42;, ngx.timer.&#42;, balancer_by_lua&#42;, ssl_certificate_by_lua&#42;, ssl_session_fetch_by_lua&#42;, ssl_session_store_by_lua&#42;, exit_worker_by_lua&#42;*
+**context:** *init_worker_by_lua&#42;, set_by_lua&#42;, rewrite_by_lua&#42;, access_by_lua&#42;, content_by_lua&#42;, header_filter_by_lua&#42;, body_filter_by_lua&#42;, log_by_lua&#42;, ngx.timer.&#42;, balancer_by_lua&#42;, ssl_certificate_by_lua&#42;, ssl_session_fetch_by_lua&#42;, ssl_session_store_by_lua&#42;*
 
 Creates an Nginx timer with a user callback function as well as optional user arguments.
 
@@ -8539,6 +8542,8 @@ table. It won't share the same `ngx.ctx` with the Lua handler creating the timer
 If you need to pass data from the timer creator to the timer handler, please
 use the extra parameters of `ngx.timer.at()`.
 
+Since nginx has been confirmed that all timers have been cleaned up when exit worker is executed, all timers will no longer be executed in exit worker phase. Reference <https://github.com/nginx/nginx/blob/f02e2a734ef472f0dcf83ab2e8ce96d1acead8a5/src/os/unix/ngx_process_cycle.c#L715>.
+
 This API was first introduced in the `v0.8.0` release.
 
 [Back to TOC](#nginx-api-for-lua)
@@ -8548,7 +8553,7 @@ ngx.timer.every
 
 **syntax:** *hdl, err = ngx.timer.every(delay, callback, user_arg1, user_arg2, ...)*
 
-**context:** *init_worker_by_lua&#42;, set_by_lua&#42;, rewrite_by_lua&#42;, access_by_lua&#42;, content_by_lua&#42;, header_filter_by_lua&#42;, body_filter_by_lua&#42;, log_by_lua&#42;, ngx.timer.&#42;, balancer_by_lua&#42;, ssl_certificate_by_lua&#42;, ssl_session_fetch_by_lua&#42;, ssl_session_store_by_lua&#42;, exit_worker_by_lua&#42;*
+**context:** *init_worker_by_lua&#42;, set_by_lua&#42;, rewrite_by_lua&#42;, access_by_lua&#42;, content_by_lua&#42;, header_filter_by_lua&#42;, body_filter_by_lua&#42;, log_by_lua&#42;, ngx.timer.&#42;, balancer_by_lua&#42;, ssl_certificate_by_lua&#42;, ssl_session_fetch_by_lua&#42;, ssl_session_store_by_lua&#42;*
 
 Similar to the [ngx.timer.at](#ngxtimerat) API function, but
 
